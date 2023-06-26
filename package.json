@@ -1,6 +1,6 @@
 {
   "name": "trackerwidget",
-  "version": "0.5.1",
+  "version": "0.1.0",
   "description": "tracker widget client application",
   "main": "index.html",
   "dependencies": {
@@ -8,10 +8,14 @@
     "axios": "^1.3.4",
     "babel-preset-es2015": "*",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons-vue": "^1.10.3",
     "bootstrap-vue-3": "^0.5.1",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "*",
     "path": "^0.12.7",
+    "pinia": "^2.1.4",
+    "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "webpack-md5-hash": "^0.0.6"

@@ -3,7 +3,7 @@ import {ApplicationInterface} from "./interfaces/ApplicationInterface";
 
 export class Loader {
 
-    public static ScriptElement;
+    public static Version;
 
     protected ApplicationName: string;
     protected App: ApplicationInterface;
@@ -18,6 +18,13 @@ export class Loader {
             throw Error("Invalid application type.");
         }
 
+        if(typeof settings === "object"){
+            settings = {
+                ...settings,
+                ...{version: Loader.Version}
+            }
+        }
+
         this.App = new Applications[this.ApplicationName](settings);
         this.App.start();
 
@@ -26,4 +33,3 @@ export class Loader {
     }
 
 }
-

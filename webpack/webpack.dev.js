@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const pk = require('../package.json');
 const {prod_Path} = require("./path");
 const path = require("path");
@@ -16,7 +17,9 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, prod_Path),
-        filename: 'bundle.js'
+        filename: '[name].bundle.js',
+        libraryTarget: "umd",
+        library: "EtWidget",
     },
     devtool: 'source-map',
     devServer: {
@@ -48,6 +51,14 @@ module.exports = {
             inject: false,
             hash: true,
             template: './index.html'
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'assets',
+                    to: 'assets'
+                }
+            ]
         }),
         new webpack.DefinePlugin({
             WIDGET_VERSION: JSON.stringify(pk.version),

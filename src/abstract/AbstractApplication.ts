@@ -1,20 +1,33 @@
 import {ApplicationInterface} from "../interfaces/ApplicationInterface";
-import {SettingsInterface} from "../interfaces/SettingsInterface";
+import {Settings} from "../config/Settings";
 
 export class AbstractApplication implements ApplicationInterface {
 
-    protected settings: SettingsInterface;
-
-    constructor(settings) {
+    constructor(settings: any) {
         try {
-            this.settings = eval("("+settings+")");
+
+            // setting event id
+            if(settings.version){
+                Settings.version = settings.version;
+            }
+
+            // setting event id
+            if(settings.event_id){
+                Settings.event_id = settings.event_id;
+            }
+
+            // container
+            if(settings.container){
+                Settings.container = settings.container;
+            }
+
         }catch (e){
             throw Error(e);
         }
     }
 
     public start(){
-        console.debug("Starting application with settings", this.settings);
+        console.debug("Starting application.");
     }
 
 }

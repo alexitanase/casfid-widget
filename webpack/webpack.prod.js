@@ -4,6 +4,8 @@ const pk = require('../package.json');
 const {prod_Path} = require("./path");
 const path = require("path");
 const { VueLoaderPlugin } = require('vue-loader')
+const CopyPlugin = require("copy-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -16,7 +18,10 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, prod_Path),
-        filename: 'bundle.js'
+        filename: '[name].bundle.js',
+        publicPath: path.resolve(__dirname, prod_Path),
+        clean: true,
+        library: "EtWidget",
     },
     module: {
         rules: [
@@ -38,17 +43,39 @@ module.exports = {
             }
         ]
     },
+    performance: {
+        hints: false,
+        maxEntrypointSize: 2048000
+    },
+    optimization: {
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+        })],
+    },
     plugins: [
         new HtmlWebpackPlugin({
             inject: false,
             hash: true,
             template: './index.html',
-            filename: 'index.html'
+            filename: 'demo.html'
         }),
         new webpack.DefinePlugin({
             WIDGET_VERSION: JSON.stringify(pk.version),
-            'process.env.NODE_ENV': JSON.stringify("PRODUCTION")
+            stats: {
+                children: true
+            }
         }),
-        new VueLoaderPlugin()
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'assets',
+                    to: 'assets'
+                }
+            ]
+        }),
+        new VueLoaderPlugin(),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1,
+        }),
     ]
 };

@@ -1,21 +1,28 @@
 <template>
-  <div class="test">
-    <h2>Widget</h2>
-    <p>Hello World!!</p>
-  </div>
-  <b-card>
-    <b-skeleton width="85%"></b-skeleton>
-    <b-skeleton width="55%"></b-skeleton>
-    <b-skeleton width="70%"></b-skeleton>
-  </b-card>
+  <component :is="Layout"></component>
 </template>
 
 <script>
+import {defineAsyncComponent} from "vue";
+import {Settings} from "../../config/Settings";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue-3/dist/bootstrap-vue-3.css";
+import LoadingView from "./views/LoadingView.vue";
+import BaseLayout from "./layout/BaseLayout.vue";
 
 export default {
-  name: "App"
+  name: "App",
+  data() {
+    return {
+      Layout: defineAsyncComponent({
+        loader: () => import(`./layout/Event${Settings.event_id}.vue`),
+        delay: 300,
+        loadingComponent: LoadingView,
+        errorComponent: BaseLayout,
+        timeout: 3000,
+      })
+    }
+  }
 }
 </script>
 
